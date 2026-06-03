@@ -118,6 +118,7 @@ Cloudflare Workers natively run JS/TS. Rust reaches the Worker runtime via compi
 
 ## Open Questions
 
+- **`navigator.sendBeacon()` as an alternative embed** — `sendBeacon()` is semantically correct for analytics (POST, reliable on page unload, can carry a structured body). Blocked for Notion (CSP prevents external scripts) so `<img>` remains necessary for v1. Future option: offer two snippet types at site creation — `<img>` for hosted/no-JS platforms, `<script>`+`sendBeacon()` for custom sites wanting richer data (custom events, time-on-page). Would require the edge worker to accept both GET and POST.
 - **Domain name / branding** — not resolved; affects Cloudflare Worker routes and Next.js config
 - **Pricing model** — free tier limits (sites? pageviews/month?) not yet defined; affects site management schema
 - **ClickHouse-managed Postgres GA** — monitor for availability and pricing; may replace Neon in production
