@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Pixel Test</title></head>
+<body>
+  <h1>Tracking pixel test</h1>
+  <p>Open DevTools → Network tab and look for a request to <code>/p</code>.</p>
+  <p>The pixel response should be a 1×1 GIF (200 OK, Content-Type: image/gif).</p>
+
+  <!-- Valid token — should enqueue an event -->
+  <img src="http://localhost:8787/p?s=test-token-valid&u=/test-page" style="display:none" />
+
+  <!-- Invalid token — should still return GIF, no event enqueued -->
+  <img src="http://localhost:8787/p?s=invalid-token&u=/test-page" style="display:none" />
+
+  <!-- Missing token — should still return GIF -->
+  <img src="http://localhost:8787/p?u=/test-page" style="display:none" />
+</body>
+</html>
