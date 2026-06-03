@@ -1,0 +1,30 @@
+# Rust
+target/
+# Cargo.lock is committed — both Rust crates are deployable applications
+
+# Wrangler / Cloudflare Workers
+.wrangler/
+worker-build/
+build/
+.dev.vars
+
+# Node / Next.js
+node_modules/
+.next/
+.env.local
+.env*.local
+web/.env
+
+# Environment files (keep .env.example, ignore actuals)
+.env
+analytics-service/.env
+edge-worker/.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+*.swp

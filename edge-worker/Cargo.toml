@@ -1,0 +1,13 @@
+[package]
+name = "edge-worker"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+worker = { version = "0.5", features = ["http"] }
+
+[profile.release]
+opt-level = "s"  # optimise for binary size on WASM target

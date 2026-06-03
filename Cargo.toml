@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "edge-worker",
+    "analytics-service",
+]
+resolver = "2"
