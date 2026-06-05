@@ -12,6 +12,8 @@ use rand::{rngs::OsRng, RngCore};
 use serde::Deserialize;
 use tracing::info;
 
+use blake3::Hasher;
+
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct QueuedMessage {
@@ -84,6 +86,16 @@ async fn run_salt_rotation(state: Arc<AppState>) {
     }
 }
 
+fn generate_hash(salt: [u8; 32], input: &EventPayload) -> String {
+    let utc_date = chrono::Utc::now().format("%Y-%m-%d").to_string();
+    let mut hasher = Hasher::new_keyed(&salt);
+    hasher.update(input.site_id.as_bytes());
+    hasher.update(input.ip.as_bytes());
+    hasher.update(input.user_agent.as_bytes());
+    hasher.update(utc_date.as_bytes());
+    hasher.finalize().to_string()
+}
+
 #[tokio::main]
 async fn main() {
     dotenv().ok();
@@ -129,7 +141,9 @@ async fn events(
         return StatusCode::UNAUTHORIZED.into_response();
     }
     for m in e.messages.iter() {
-        info!("{}", m.id)
+        let _hash = generate_hash(state.salt_store.get().await, &m.body);
+        // write to clickhouse
+        info!("{} written to clickhouse", m.id)
     }
     StatusCode::OK.into_response()
 }
